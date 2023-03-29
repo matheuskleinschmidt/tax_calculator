@@ -9,4 +9,12 @@ const getChapters = async (
   response.body = chapters;
 };
 
-export { getChapters };
+const teste = async (
+  { response }
+) => {
+  let chapters = [{tese:"teste"}]
+  response.status = 200;
+  response.body = chapters;
+};
+
+export { getChapters,teste };
