@@ -3,6 +3,6 @@ import { teste } from "../controllers/youtube-chapters-controller.ts";
 
 const router = new Router();
 
-router.get("/api", teste);
+router.get("/", teste);
 
 export default router;
