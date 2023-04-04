@@ -8,5 +8,5 @@ app.use(oakCors());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-console.log();
+console.log("rodando na porta em alguma porta");
 await app.listen();
