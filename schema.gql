@@ -1,7 +1,0 @@
-type Todo {
-   key: String
-}
-
-type Query {
-   allTodos: [Todo!]
-}
