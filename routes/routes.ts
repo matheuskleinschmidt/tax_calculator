@@ -8,7 +8,7 @@ const envVars = await config();
 const prisma = new PrismaClient({
     datasources: {
       db: {
-        url: envVars.DATABASE_URL,
+        url: "prisma://aws-us-east-1.prisma-data.com/?api_key=PsW3TLn4_WkZAKNLOYKZwK3GGNtPkoP0hbVRhTvN4iHSJGfjUL-IeCUtm1qbIHa7"
       },
     },
   });
