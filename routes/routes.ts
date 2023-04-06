@@ -36,6 +36,25 @@ router.get("/", (context) => {
       },
     });
     context.response.body = dinosaur;
-  })
+  }).post("/dinosaur", async (context) => {
+    // Create a new dinosaur.
+    const { name, description } = await context.request.body(JSON).value;
+    const result = await prisma.dinosaur.create({
+      data: {
+        name,
+        description,
+      },
+    });
+    context.response.body = result;
+  }).delete("/dinosaur/:id", async (context) => {
+    // Delete a dinosaur by id.
+    const { id } = context.params;
+    const dinosaur = await prisma.dinosaur.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    context.response.body = dinosaur;
+  });
 
 export default router;

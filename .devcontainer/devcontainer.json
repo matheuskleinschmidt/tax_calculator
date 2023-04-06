@@ -35,6 +35,7 @@
 		"ghcr.io/devcontainers-contrib/features/deno-asdf:2": {},
 		"ghcr.io/devcontainers-contrib/features/gh-release:1": {},
 		"ghcr.io/devcontainers-contrib/features/npm-package:1": {},
-		"ghcr.io/devcontainers-contrib/features/prisma:2": {}
+		"ghcr.io/devcontainers-contrib/features/prisma:2": {},
+		"ghcr.io/devcontainers-contrib/features/typescript:2": {}
 	}
 }
