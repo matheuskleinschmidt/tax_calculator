@@ -23,6 +23,19 @@ router.get("/", (context) => {
     // Get all dinosaurs.
     const dinosaurs = await prisma.dinosaur.findMany();
     context.response.body = dinosaurs;
+  }).get("/test", async (context) => {
+    // Get all dinosaurs.
+    const dinosaurs = await prisma.taxRanges.findMany();
+    context.response.body = dinosaurs;
+  }).get("/dinosaur/:id", async (context) => {
+    // Get one dinosaur by id.
+    const { id } = context.params;
+    const dinosaur = await prisma.dinosaur.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+    context.response.body = dinosaur;
   })
 
 export default router;
