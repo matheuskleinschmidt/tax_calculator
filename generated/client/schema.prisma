@@ -1,36 +1,56 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["deno"]
-  output = "../generated/client"
+  output          = "../generated/client"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = "prisma://aws-us-east-1.prisma-data.com/?api_key=PsW3TLn4_WkZAKNLOYKZwK3GGNtPkoP0hbVRhTvN4iHSJGfjUL-IeCUtm1qbIHa7"
+  url      = "prisma://aws-us-east-1.prisma-data.com/?api_key=bVh4IUeLotqTc_36VLug4pwnAe9p60ArKuU6JcuH3mAsM_DzHBlxPI9VTnJL5cTo"
 }
 
 model Dinosaur {
-  id          Int     @id @default(autoincrement())
-  name        String  @unique
+  id          Int    @id @default(autoincrement())
+  name        String @unique
   description String
 }
 
-model taxRanges {
-  id          Int     @id @default(autoincrement())
-  name        String  @unique
-  min         Int
-  max         Int
-  aliquot     Int
-  AmountToDeduct Int
-  IRPJ        Int
-  CSLL        Int
-  Cofins      Int
-  PisPasep    Int
-  CPP         Int
-  ICMS        Int
-  description String
+model taxation {
+  id                  Int             @id @default(autoincrement())
+  name                String          @unique
+  value               Int
+  isPercentage        Boolean
+  isDividedOneHundred Boolean
+  rangeTaxation       rangeTaxation[]
 }
 
+model range {
+  id            Int             @id @default(autoincrement())
+  name          String          @unique
+  description   String          @unique
+  rangeTaxation rangeTaxation[]
+  typeRange     typeRange[]
+}
+
+model type {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  description String      @unique
+  typeRange   typeRange[]
+}
+
+model rangeTaxation {
+  id         Int      @id @default(autoincrement())
+  range      range    @relation(fields: [rangeId], references: [id])
+  rangeId    Int
+  taxation   taxation @relation(fields: [taxationId], references: [id])
+  taxationId Int
+}
+
+model typeRange {
+  id      Int   @id @default(autoincrement())
+  type    type  @relation(fields: [typeId], references: [id])
+  typeId  Int
+  range   range @relation(fields: [rangeId], references: [id])
+  rangeId Int
+}

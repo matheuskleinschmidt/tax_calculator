@@ -100,25 +100,29 @@ exports.Prisma.QueryMode = makeEnum({
   insensitive: 'insensitive'
 });
 
+exports.Prisma.RangeScalarFieldEnum = makeEnum({
+  id: 'id',
+  name: 'name',
+  description: 'description'
+});
+
+exports.Prisma.RangeTaxationScalarFieldEnum = makeEnum({
+  id: 'id',
+  rangeId: 'rangeId',
+  taxationId: 'taxationId'
+});
+
 exports.Prisma.SortOrder = makeEnum({
   asc: 'asc',
   desc: 'desc'
 });
 
-exports.Prisma.TaxRangesScalarFieldEnum = makeEnum({
+exports.Prisma.TaxationScalarFieldEnum = makeEnum({
   id: 'id',
   name: 'name',
-  min: 'min',
-  max: 'max',
-  aliquot: 'aliquot',
-  AmountToDeduct: 'AmountToDeduct',
-  IRPJ: 'IRPJ',
-  CSLL: 'CSLL',
-  Cofins: 'Cofins',
-  PisPasep: 'PisPasep',
-  CPP: 'CPP',
-  ICMS: 'ICMS',
-  description: 'description'
+  value: 'value',
+  isPercentage: 'isPercentage',
+  isDividedOneHundred: 'isDividedOneHundred'
 });
 
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
@@ -128,10 +132,26 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.TypeRangeScalarFieldEnum = makeEnum({
+  id: 'id',
+  typeId: 'typeId',
+  rangeId: 'rangeId'
+});
+
+exports.Prisma.TypeScalarFieldEnum = makeEnum({
+  id: 'id',
+  name: 'name',
+  description: 'description'
+});
+
 
 exports.Prisma.ModelName = makeEnum({
   Dinosaur: 'Dinosaur',
-  taxRanges: 'taxRanges'
+  taxation: 'taxation',
+  range: 'range',
+  type: 'type',
+  rangeTaxation: 'rangeTaxation',
+  typeRange: 'typeRange'
 });
 
 /**
