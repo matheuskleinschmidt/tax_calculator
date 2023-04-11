@@ -23,5 +23,39 @@ router.get("/", (context) => {
     // Get all dinosaurs.
     const dinosaurs = await prisma.dinosaur.findMany();
     context.response.body = dinosaurs;
+  }).get("/opa", async (context) => {
+    // Get all dinosaurs.
+    const dinosaurs = await prisma.range.findMany();
+    context.response.body = dinosaurs;
+  }).get("/dinosaur/:id", async (context) => {
+    // Get one dinosaur by id.
+    const { id } = context.params;
+    const dinosaur = await prisma.dinosaur.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+    context.response.body = dinosaur;
   })
+  .post("/dinosaur", async (context) => {
+    // Create a new dinosaur.
+    const { name, description } = await context.request.body("json").value;
+    const result = await prisma.dinosaur.create({
+      data: {
+        name,
+        description,
+      },
+    });
+    context.response.body = result;
+  })
+  .delete("/dinosaur/:id", async (context) => {
+    // Delete a dinosaur by id.
+    const { id } = context.params;
+    const dinosaur = await prisma.dinosaur.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    context.response.body = dinosaur;
+  });
 export default router;
