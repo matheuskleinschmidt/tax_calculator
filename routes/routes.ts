@@ -25,8 +25,33 @@ router.get("/", (context) => {
     context.response.body = dinosaurs;
   }).get("/opa", async (context) => {
     // Get all dinosaurs.
-    const dinosaurs = await prisma.range.findMany();
-    context.response.body = dinosaurs;
+    const result = await prisma.type.findMany({
+      select: {
+        name: true,
+        typeRange: {
+          select: {
+            range: {
+              select: {
+                name: true,
+                rangeTaxation: {
+                  select: {
+                    taxation: {
+                      select: {
+                        name: true,
+                        value: true,
+                        isPercentage: true,
+                        isDividedOneHundred: true,
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+    context.response.body = result;
   }).get("/dinosaur/:id", async (context) => {
     // Get one dinosaur by id.
     const { id } = context.params;
