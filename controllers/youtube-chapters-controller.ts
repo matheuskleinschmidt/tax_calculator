@@ -1,4 +1,4 @@
-import { BodyJson } from "https://deno.land/x/oak/mod.ts";
+import { BodyJson } from "https://deno.land/x/oak@v12.1.0/mod.ts";
 
  const teste =  ({ response }: any) => {
   let chapters = [
