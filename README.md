@@ -1,9 +1,25 @@
 # tax_calculator
 
+## Sobre o projeto 
+
+O Neom, por sua vez, é um banco de dados em grafo que permite modelar dados de maneira mais flexível e eficiente do que os bancos de dados relacionais tradicionais. Ele usa a linguagem Cypher para consultar e manipular dados e fornece recursos avançados, como índices em tempo real, consultas em tempo real e suporte para escalabilidade horizontal.
+
+Com essas três ferramentas em mãos, podemos criar uma API para armazenar informações sobre o cálculo de impostos do Simples Nacional. Por exemplo, podemos criar um modelo de dados para representar as informações relevantes, como o valor da receita bruta, o percentual do imposto e o valor a ser pago. Podemos então usar o Prisma.ts para interagir com o banco de dados, criar, ler, atualizar e excluir registros.
+
+Além disso, podemos usar o Neom para modelar relacionamentos entre as entidades, como as relações entre os valores da receita bruta e os percentuais do imposto. Isso nos permite consultar e manipular dados de forma mais poderosa e flexível do que seria possível com um banco de dados relacional tradicional.
+
+Por fim, podemos usar o Deno para criar uma API RESTful para expor as funcionalidades da nossa aplicação. Isso nos permite criar endpoints para criar, ler, atualizar e excluir registros, além de consultar dados e executar outras operações. Podemos usar bibliotecas como o Oak para simplificar o processo de criação de rotas e middleware.
+
+Em resumo, uma API construída com Deno, Prisma.ts e Neom para armazenar informações sobre o cálculo de impostos do Simples Nacional oferece uma série de vantagens em relação a outras tecnologias. Ela é mais segura, produtiva, flexível e eficiente, o que nos permite criar aplicativos mais poderosos e escaláveis com menos esforço.
+
+
+## Modelo de entidade relacional
+
+![alt text](https://github.com/matheuskleinschmidt/tax_calculator/blob/main/mer.jpg)
+
+# Informações para o desenvolvimento
+
+
 http://localhost:8080/api
 
 deno run --allow-read --allow-net --allow-env app.ts
-
-# Modelo de entidade relacional
-
-![alt text](https://github.com/matheuskleinschmidt/tax_calculator/blob/main/mer.jpg)
