@@ -23,8 +23,16 @@ router.get("/", (context) => {
     // Get all dinosaurs.
     const dinosaurs = await prisma.dinosaur.findMany();
     context.response.body = dinosaurs;
+  }).post("/type", async (context) => {
+    const { name, description } = await context.request.body("json").value;
+    const result = await prisma.type.create({
+      data: {
+        name,
+        description,
+      },
+    });
+    context.response.body = result;
   }).get("/opa", async (context) => {
-    // Get all dinosaurs.
     const result = await prisma.type.findMany({
       select: {
         name: true,

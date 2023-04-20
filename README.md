@@ -30,4 +30,6 @@ Em resumo, uma API construída com Deno, Prisma.ts e Neom para armazenar informa
 
 http://localhost:8080/api
 
+deno run app.ts
+
 deno run --allow-read --allow-net --allow-env app.ts
