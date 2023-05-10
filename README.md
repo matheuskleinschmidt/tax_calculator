@@ -27,8 +27,20 @@ Em resumo, uma API construída com Deno, Prisma.ts e Neom para armazenar informa
 
 # Informações para o desenvolvimento
 
-http://localhost:8080/api
+## Sobre como executar o projeto
 
+O Deno.js simplifica o processo de desenvolvimento é através da eliminação da necessidade de executar vários comandos para iniciar um aplicativo, já que o Deno.js fornece uma única linha de comando para executar a aplicação.
+
+Além disso, o Deno.js possui um sistema de gerenciamento de pacotes integrado, o que significa que os desenvolvedores não precisam instalar ferramentas de terceiros, como o npm, para adicionar bibliotecas e módulos aos seus projetos. O Deno.js também tem uma arquitetura segura por padrão, o que significa que os desenvolvedores podem confiar na segurança do código que estão escrevendo, sem a necessidade de configurar recursos de segurança adicionais. Em resumo, o Deno.js simplifica o processo de desenvolvimento ao fornecer uma plataforma completa e segura para a criação de aplicativos JavaScript.
+
+### Porta que o projeto vai usar
+
+http://localhost:8080/
+
+### Comandos 
+
+#### Para executar a aplicação
 deno run --allow-read --allow-net --allow-env app.ts
 
+#### Para executar a aplicação em modo de desenvolvimento
 denon run --allow-read --allow-net --allow-env app.ts
