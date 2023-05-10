@@ -16,9 +16,13 @@ Por fim, podemos usar o Deno para criar uma API RESTful para expor as funcionali
 
 Em resumo, uma API construída com Deno, Prisma.ts e Neom para armazenar informações sobre o cálculo de impostos do Simples Nacional oferece uma série de vantagens em relação a outras tecnologias. Ela é mais segura, produtiva, flexível e eficiente, o que nos permite criar aplicativos mais poderosos e escaláveis com menos esforço.
 
+### Links úteis
 
-
-
+Documentação: [Documentação](https://catolicasc-my.sharepoint.com/:w:/g/personal/jonas02_silva_catolicasc_edu_br/EV8QEyhepDxNpLjpQMFMr1gBrv4pIzO94v2YLjw7JyfI8g?e=29Vnj2)
+\
+Canvas: [Canvas](https://www.canva.com/design/DAFetwcjUuE/xP5Nq89P-g_viNyDR7kcDA/edit?utm_content=DAFetwcjUuE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+\
+Link do Mockup no Figma: [Figma](https://www.figma.com/file/b858TyEGnkO3Y6PymonFtk/Untitled?node-id=0%3A1&t=oqioCtZku9452n1a-1)
 
 
 ## Modelo de entidade relacional
