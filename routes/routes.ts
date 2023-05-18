@@ -98,7 +98,33 @@ router.get("/", (context) => {
     } finally {
       await prisma.$disconnect();
     }
-  })
+  }).post("/range", async (context) => {
+    try {
+      const { rangeName, rangeDescription, typeId } = await context.request.body().value;
+  
+      const range = await prisma.range.create({
+        data: {
+          name: rangeName,
+          description: rangeDescription,
+        },
+      });
+  
+      const typeRange = await prisma.typeRange.create({
+        data: {
+          typeId: typeId,
+          rangeId: range.id,
+        },
+      });
+  
+      context.response.body = { range, typeRange };
+    } catch (error) {
+      console.error("Error filling tables:", error);
+      context.response.status = 500;
+      context.response.body = { error: "Internal Server Error" };
+    } finally {
+      await prisma.$disconnect();
+    }
+  })  
   .delete("/dinosaur/:id", async (context) => {
     // Delete a dinosaur by id.
     const { id } = context.params;
