@@ -124,8 +124,37 @@ router.get("/", (context) => {
     } finally {
       await prisma.$disconnect();
     }
-  })  
-  .delete("/dinosaur/:id", async (context) => {
+  }).post("/taxation", async (context) => {
+    try {
+      const { taxationName, taxationValue, isPercentage, isDividedOneHundred,rangeId } = await context.request.body().value;
+  
+      // Criação da Taxation
+      const taxation = await prisma.taxation.create({
+        data: {
+          name: taxationName,
+          value: taxationValue,
+          isPercentage,
+          isDividedOneHundred,
+        },
+      });
+  
+      // Criação do RangeTaxation
+      const rangeTaxation = await prisma.rangeTaxation.create({
+        data: {
+          rangeId: rangeId,
+          taxationId: taxation.id,
+        },
+      });
+  
+      context.response.body = {  taxation, rangeTaxation };
+    } catch (error) {
+      console.error("Error filling tables:", error);
+      context.response.status = 500;
+      context.response.body = { error: "Internal Server Error" };
+    } finally {
+      await prisma.$disconnect();
+    }
+  }).delete("/dinosaur/:id", async (context) => {
     // Delete a dinosaur by id.
     const { id } = context.params;
     const dinosaur = await prisma.dinosaur.delete({
