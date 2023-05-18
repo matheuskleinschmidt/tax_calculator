@@ -81,6 +81,24 @@ router.get("/", (context) => {
     });
     context.response.body = result;
   })
+  .post("/type", async (context) => {
+    try {
+      const { name, description } = await context.request.body().value;
+      const result = await prisma.type.create({
+        data: {
+          name,
+          description,
+        },
+      });
+      context.response.body = result;
+    } catch (error) {
+      console.error("Error creating type:", error);
+      context.response.status = 500;
+      context.response.body = { error: "Internal Server Error" };
+    } finally {
+      await prisma.$disconnect();
+    }
+  })
   .delete("/dinosaur/:id", async (context) => {
     // Delete a dinosaur by id.
     const { id } = context.params;
