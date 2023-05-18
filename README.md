@@ -51,20 +51,24 @@ denon run --allow-read --allow-net --allow-env app.ts
 
 ## Rotas disponiveis 
 
-get  /teste
-get  /
-get  /dinosaur
-get  /opa
-get  /dinosaur/:id
+#### get  "/teste"
 
-post  /dinosaur
+#### get  "/"
+
+#### get  "/dinosaur"
+
+#### get  "/opa"
+
+#### get  "/dinosaur/:id"
+
+#### post  "/dinosaur"
 body: name, description
 
-post /type
+#### post "/type"
 body: name, description
 
-post  /range
+#### post  "/range"
 body: rangeName, rangeDescription, typeId
 
-post /taxation
+#### post "/taxation"
 body: taxationName, taxationValue, isPercentage, isDividedOneHundred,rangeId
