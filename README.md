@@ -48,3 +48,23 @@ deno run --allow-read --allow-net --allow-env app.ts
 
 #### Para executar a aplicação em modo de desenvolvimento
 denon run --allow-read --allow-net --allow-env app.ts
+
+## Rotas disponiveis 
+
+get  /teste
+get  /
+get  /dinosaur
+get  /opa
+get  /dinosaur/:id
+
+post  /dinosaur
+body: name, description
+
+post /type
+body: name, description
+
+post  /range
+body: rangeName, rangeDescription, typeId
+
+post /taxation
+body: taxationName, taxationValue, isPercentage, isDividedOneHundred,rangeId
