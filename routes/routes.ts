@@ -32,7 +32,7 @@ router.get("/", (context) => {
       },
     });
     context.response.body = result;
-  }).get("/opa", async (context) => {
+  }).get("/types", async (context) => {
     const result = await prisma.type.findMany({
       select: {
         name: true,
