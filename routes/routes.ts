@@ -1,7 +1,8 @@
-import { Router } from "https://deno.land/x/oak@v12.1.0/mod.ts";
-import  teste  from "../controllers/youtube-chapters-controller.ts";
-import { PrismaClient } from "../generated/client/deno/edge.ts";
-import { config } from "https://deno.land/std@0.163.0/dotenv/mod.ts";
+import {  Router, config } from "./deps.ts";
+import { PrismaClient } from "./deps.ts";
+import router from "./routes/routes.ts";
+import teste from "../controllers/youtube-chapters-controller.ts";
+
 
 const envVars = await config();
 
