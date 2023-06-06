@@ -1,6 +1,6 @@
 # tax_calculator
 
-## Sobre o projeto 
+## Sobre o projeto opa
 
 Para entender sobre o projeto vamos começar falando sobre o Deno é um ambiente de tempo de execução para JavaScript e TypeScript que oferece segurança, produtividade e desempenho, além de uma série de recursos úteis para desenvolvedores de aplicativos. Ele inclui um sistema de gerenciamento de pacotes, suporte a módulos ES nativos, um mecanismo de execução assíncrona e muito mais.
 
