@@ -26,16 +26,19 @@ router.get("/", (context) => {
   }).get("/types", async (context) => {
     const result = await prisma.type.findMany({
       select: {
+        id: true,
         name: true,
         typeRange: {
           select: {
             range: {
               select: {
+                id: true,
                 name: true,
                 rangeTaxation: {
                   select: {
                     taxation: {
                       select: {
+                        id: true,
                         name: true,
                         value: true,
                         isPercentage: true,
