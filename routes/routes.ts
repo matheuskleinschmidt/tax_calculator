@@ -1,6 +1,5 @@
-import {  Router, config } from "./deps.ts";
-import { PrismaClient } from "./deps.ts";
-import router from "./routes/routes.ts";
+import {  Router, config } from "../deps.ts";
+import { PrismaClient } from "../deps.ts";
 import teste from "../controllers/youtube-chapters-controller.ts";
 
 
@@ -24,15 +23,6 @@ router.get("/", (context) => {
     // Get all dinosaurs.
     const dinosaurs = await prisma.dinosaur.findMany();
     context.response.body = dinosaurs;
-  }).post("/type", async (context) => {
-    const { name, description } = await context.request.body("json").value;
-    const result = await prisma.type.create({
-      data: {
-        name,
-        description,
-      },
-    });
-    context.response.body = result;
   }).get("/types", async (context) => {
     const result = await prisma.type.findMany({
       select: {
