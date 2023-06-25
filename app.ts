@@ -1,158 +1,158 @@
 import { Application, Router, Context } from "https://deno.land/x/oak/mod.ts";
-import { Client } from "https://deno.land/x/postgres/mod.ts";
+import { Client } from "https://deno.land/x/postgres@v0.17.0/mod.ts";
 import teste from "./initialvalues.ts";
 
-const config = {
-  applicationName: "my_custom_app",
-  connection: {
-    attempts: 1,
-  },
-  database: "tax-calculator",
-  hostname: "ep-damp-moon-409508.us-east-2.aws.neon.tech",
-  host_type: "tcp",
-  password: "YFbndf4ry1sE",
-  port: 5432,
-  user: "opa",
-  tls: {
-    enforce: false,
-  },
-};
+const client = new Client({
+    database: "tax-calculator",
+    hostname: "ep-damp-moon-409508.us-east-2.aws.neon.tech",
+    host_type: "tcp",
+    password: "YFbndf4ry1sE",
+    port: 5432,
+    user: "opa",
+});
 
-const app = new Application();
+interface SimplesNacional {
+  id?: number;
+  rBT12: number;
+  nominalRate: number;
+  deduction: number;
+  IRPJ: number;
+  CSLL: number;
+  COFINS: number;
+  PIS: number;
+  CPP: number;
+  ICMS: number;
+}
+
 const router = new Router();
 
-const client = new Client(config);
-
 router.get("/teste", teste.teste);
-router.get("/", (context) => {
-  context.response.body = "Welcome to the Dinosaur API!";
-});
-
-router.get("/simples-nacional", async (ctx: Context) => {
+// Listar todos os registros
+router.get("/simplesnacional", async (ctx: Context) => {
   try {
     await client.connect();
-    const result = await client.query("SELECT * FROM simples_nacional");
-    ctx.response.body = result.rowsOfObjects();
+    const result = await client.queryObject("SELECT * FROM SimplesNacional");
+    ctx.response.body = result.rows;
   } catch (error) {
-    console.log(error);
+    console.log(error)
     ctx.response.status = 500;
-    ctx.response.body = { error: "Internal server error" };
+    ctx.response.body = { error: "Erro ao listar registros" };
   } finally {
     await client.end();
   }
 });
 
-router.get("/simples-nacional/:id", async (ctx: Context) => {
+// Obter um registro por ID
+router.get("/simplesnacional/:id", async (ctx: Context) => {
+  const { id } = ctx.params;
   try {
     await client.connect();
-    const { id } = ctx.params;
-    const result = await client.query(
-      "SELECT * FROM simples_nacional WHERE id = $1",
+    const result = await client.queryArray(
+      "SELECT * FROM SimplesNacional WHERE id = $1",
       id
     );
-
     if (result.rows.length === 0) {
       ctx.response.status = 404;
-      ctx.response.body = { error: "Resource not found" };
-    } else {
-      ctx.response.body = result.rowsOfObjects()[0];
+      ctx.response.body = { error: "Registro não encontrado" };
+      return;
     }
+    ctx.response.body = result.rows;
   } catch (error) {
     ctx.response.status = 500;
-    ctx.response.body = { error: "Internal server error" };
+    ctx.response.body = { error: "Erro ao obter registro" };
   } finally {
     await client.end();
   }
 });
 
-router.post("/simples-nacional", async (ctx: Context) => {
+// Criar um registro
+router.post("/simplesnacional", async (ctx: Context) => {
+  const { value } = await ctx.request.body();
+  const newRecord: SimplesNacional = value;
   try {
     await client.connect();
-    const body = await ctx.request.body().value;
-    const { rBT12, nominalRate, deduction, IRPJ, CSLL, COFINS, PIS, CPP, ICMS } = body;
-
     const result = await client.query(
-      "INSERT INTO simples_nacional (rBT12, nominalRate, deduction, IRPJ, CSLL, COFINS, PIS, CPP, ICMS) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
-      rBT12,
-      nominalRate,
-      deduction,
-      IRPJ,
-      CSLL,
-      COFINS,
-      PIS,
-      CPP,
-      ICMS
+      "INSERT INTO SimplesNacional (rBT12, nominalRate, deduction, IRPJ, CSLL, COFINS, PIS, CPP, ICMS) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
+      newRecord.rBT12,
+      newRecord.nominalRate,
+      newRecord.deduction,
+      newRecord.IRPJ,
+      newRecord.CSLL,
+      newRecord.COFINS,
+      newRecord.PIS,
+      newRecord.CPP,
+      newRecord.ICMS
     );
-
-    ctx.response.status = 201;
     ctx.response.body = result.rowsOfObjects()[0];
   } catch (error) {
     ctx.response.status = 500;
-    ctx.response.body = { error: "Internal server error" };
+    ctx.response.body = { error: "Erro ao criar registro" };
   } finally {
     await client.end();
   }
 });
 
-router.put("/simples-nacional/:id", async (ctx: Context) => {
+// Atualizar um registro
+router.put("/simplesnacional/:id", async (ctx: Context) => {
+  const { id } = ctx.params;
+  const { value } = await ctx.request.body();
+  const updatedRecord: SimplesNacional = value;
   try {
     await client.connect();
-    const { id } = ctx.params;
-    const body = await ctx.request.body().value;
-    const { rBT12, nominalRate, deduction, IRPJ, CSLL, COFINS, PIS, CPP, ICMS } = body;
-
     const result = await client.query(
-      "UPDATE simples_nacional SET rBT12 = $2, nominalRate = $3, deduction = $4, IRPJ = $5, CSLL = $6, COFINS = $7, PIS = $8, CPP = $9, ICMS = $10 WHERE id = $1 RETURNING *",
-      id,
-      rBT12,
-      nominalRate,
-      deduction,
-      IRPJ,
-      CSLL,
-      COFINS,
-      PIS,
-      CPP,
-      ICMS
-    );
-
-    if (result.rows.length === 0) {
-      ctx.response.status = 404;
-      ctx.response.body = { error: "Resource not found" };
-    } else {
-      ctx.response.body = result.rowsOfObjects()[0];
-    }
-  } catch (error) {
-    ctx.response.status = 500;
-    ctx.response.body = { error: "Internal server error" };
-  } finally {
-    await client.end();
-  }
-});
-
-router.delete("/simples-nacional/:id", async (ctx: Context) => {
-  try {
-    await client.connect();
-    const { id } = ctx.params;
-    const result = await client.query(
-      "DELETE FROM simples_nacional WHERE id = $1",
+      "UPDATE SimplesNacional SET rBT12 = $1, nominalRate = $2, deduction = $3, IRPJ = $4, CSLL = $5, COFINS = $6, PIS = $7, CPP = $8, ICMS = $9 WHERE id = $10 RETURNING *",
+      updatedRecord.rBT12,
+      updatedRecord.nominalRate,
+      updatedRecord.deduction,
+      updatedRecord.IRPJ,
+      updatedRecord.CSLL,
+      updatedRecord.COFINS,
+      updatedRecord.PIS,
+      updatedRecord.CPP,
+      updatedRecord.ICMS,
       id
     );
-
-    if (result.rowCount === 0) {
+    if (result.rows.length === 0) {
       ctx.response.status = 404;
-      ctx.response.body = { error: "Resource not found" };
-    } else {
-      ctx.response.status = 204;
+      ctx.response.body = { error: "Registro não encontrado" };
+      return;
     }
+    ctx.response.body = result.rowsOfObjects()[0];
   } catch (error) {
     ctx.response.status = 500;
-    ctx.response.body = { error: "Internal server error" };
+    ctx.response.body = { error: "Erro ao atualizar registro" };
   } finally {
     await client.end();
   }
 });
 
+// Deletar um registro
+router.delete("/simplesnacional/:id", async (ctx: Context) => {
+  const { id } = ctx.params;
+  try {
+    await client.connect();
+    const result = await client.query(
+      "DELETE FROM SimplesNacional WHERE id = $1 RETURNING *",
+      id
+    );
+    if (result.rows.length === 0) {
+      ctx.response.status = 404;
+      ctx.response.body = { error: "Registro não encontrado" };
+      return;
+    }
+    ctx.response.body = { message: "Registro deletado com sucesso" };
+  } catch (error) {
+    ctx.response.status = 500;
+    ctx.response.body = { error: "Erro ao deletar registro" };
+  } finally {
+    await client.end();
+  }
+});
+
+const app = new Application();
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-await app.listen({ port: 8080 }); // replace with your desired port
+console.log("API rodando em http://localhost:8000");
+
+await app.listen({ port: 8000 });
