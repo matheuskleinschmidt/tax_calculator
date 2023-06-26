@@ -1,6 +1,5 @@
 import { Application, Router, Context } from "https://deno.land/x/oak/mod.ts";
 import { Client } from "https://deno.land/x/postgres@v0.17.0/mod.ts";
-import teste from "./initialvalues.ts";
 
 const client = new Client({
     database: "tax-calculator",
@@ -26,7 +25,6 @@ interface SimplesNacional {
 
 const router = new Router();
 
-router.get("/teste", teste.teste);
 // Listar todos os registros
 router.get("/simplesnacional", async (ctx: Context) => {
   try {
@@ -47,8 +45,9 @@ router.get("/simplesnacional/:id", async (ctx: Context) => {
   const { id } = ctx.params;
   try {
     await client.connect();
-    const result = await client.queryArray(
-      "SELECT * FROM SimplesNacional WHERE id = $1",
+    console.log(id)
+    const result = await client.queryObject(
+      "SELECT * FROM simplesnacional WHERE id = $1",
       id
     );
     if (result.rows.length === 0) {
@@ -58,6 +57,7 @@ router.get("/simplesnacional/:id", async (ctx: Context) => {
     }
     ctx.response.body = result.rows;
   } catch (error) {
+    console.log(error)
     ctx.response.status = 500;
     ctx.response.body = { error: "Erro ao obter registro" };
   } finally {
@@ -67,58 +67,62 @@ router.get("/simplesnacional/:id", async (ctx: Context) => {
 
 // Criar um registro
 router.post("/simplesnacional", async (ctx: Context) => {
-  const { value } = await ctx.request.body();
-  const newRecord: SimplesNacional = value;
-  try {
-    await client.connect();
-    const result = await client.query(
-      "INSERT INTO SimplesNacional (rBT12, nominalRate, deduction, IRPJ, CSLL, COFINS, PIS, CPP, ICMS) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
-      newRecord.rBT12,
-      newRecord.nominalRate,
-      newRecord.deduction,
-      newRecord.IRPJ,
-      newRecord.CSLL,
-      newRecord.COFINS,
-      newRecord.PIS,
-      newRecord.CPP,
-      newRecord.ICMS
-    );
-    ctx.response.body = result.rowsOfObjects()[0];
-  } catch (error) {
-    ctx.response.status = 500;
-    ctx.response.body = { error: "Erro ao criar registro" };
-  } finally {
-    await client.end();
-  }
-});
+    const { value } = await ctx.request.body();
+    const newRecord: SimplesNacional = value;
+    console.log(await ctx.request.body().value)
+    let teste = await ctx.request.body().value
+    try {
+      await client.connect();
+        const result = await client.queryObject(
+          `INSERT INTO SimplesNacional ("rBT12", "nominalRate", deduction, "IRPJ", "CSLL", "COFINS", "PIS", "CPP", "ICMS")
+          VALUES (${teste.rBT12}, ${teste.nominalRate}, ${teste.deduction}, ${teste.IRPJ}, ${teste.CSLL},
+             ${teste.COFINS}, ${teste.PIS}, ${teste.CPP}, ${teste.ICMS}) RETURNING *`,
+          teste.rBT12,
+          teste.nominalRate,
+          teste.deduction,
+          teste.IRPJ,
+          teste.CSLL,
+          teste.COFINS,
+          teste.PIS,
+          teste.CPP,
+          teste.ICMS
+        );
+        ctx.response.body = result.rows;    
+    } catch (error) {
+      console.log(error);
+      ctx.response.status = 500;
+      ctx.response.body = { error: "Erro ao criar registro" };
+    } finally {
+      await client.end();
+    }
+  });
+  
+  
+  
+  
 
 // Atualizar um registro
 router.put("/simplesnacional/:id", async (ctx: Context) => {
   const { id } = ctx.params;
   const { value } = await ctx.request.body();
   const updatedRecord: SimplesNacional = value;
+  let teste = await ctx.request.body().value
+  let param = ctx.params
+  console.log(param )
   try {
     await client.connect();
-    const result = await client.query(
-      "UPDATE SimplesNacional SET rBT12 = $1, nominalRate = $2, deduction = $3, IRPJ = $4, CSLL = $5, COFINS = $6, PIS = $7, CPP = $8, ICMS = $9 WHERE id = $10 RETURNING *",
-      updatedRecord.rBT12,
-      updatedRecord.nominalRate,
-      updatedRecord.deduction,
-      updatedRecord.IRPJ,
-      updatedRecord.CSLL,
-      updatedRecord.COFINS,
-      updatedRecord.PIS,
-      updatedRecord.CPP,
-      updatedRecord.ICMS,
-      id
+    const result = await client.queryObject(
+      `UPDATE SimplesNacional SET "rBT12" = ${teste.rBT12}, "nominalRate" = ${teste.nominalRate}, "deduction" =  ${teste.deduction}, 
+      "IRPJ" = ${teste.IRPJ}, "CSLL" = ${teste.CSLL}, "COFINS" = ${teste.COFINS}, "PIS" = ${teste.PIS}, "CPP" = ${teste.CPP}, "ICMS" = ${teste.ICMS} WHERE id = ${param.id} RETURNING *`,
     );
     if (result.rows.length === 0) {
       ctx.response.status = 404;
       ctx.response.body = { error: "Registro não encontrado" };
       return;
     }
-    ctx.response.body = result.rowsOfObjects()[0];
+    ctx.response.body = result.rows;
   } catch (error) {
+    console.log(error)
     ctx.response.status = 500;
     ctx.response.body = { error: "Erro ao atualizar registro" };
   } finally {
@@ -129,11 +133,11 @@ router.put("/simplesnacional/:id", async (ctx: Context) => {
 // Deletar um registro
 router.delete("/simplesnacional/:id", async (ctx: Context) => {
   const { id } = ctx.params;
+  let param = ctx.params
   try {
     await client.connect();
-    const result = await client.query(
-      "DELETE FROM SimplesNacional WHERE id = $1 RETURNING *",
-      id
+    const result = await client.queryObject(
+      `DELETE FROM SimplesNacional WHERE id = ${param.id} RETURNING *`,
     );
     if (result.rows.length === 0) {
       ctx.response.status = 404;
@@ -153,6 +157,6 @@ const app = new Application();
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-console.log("API rodando em http://localhost:8000");
+console.log("API rodando ");
 
 await app.listen({ port: 8000 });
